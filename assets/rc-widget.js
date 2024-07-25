@@ -113,42 +113,7 @@ class RechargeWidget extends HTMLElement {
         const nextShipmentObj = await recharge.subscription
     }
 
-    async addToNextShipment(address) {
-        const variantId = document.querySelector('.product__info-container').getAttribute('data-product-variant');
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const day = String(today.getDate()).padStart(2, '0');
-
-        const date = `${year}-${month}-${day}`;
-        await recharge.onetime.createOnetime(this.session, {
-            address_id: address.address_id,
-            next_charge_scheduled_at: date,
-            quantity: 1,
-            external_variant_id: {
-                ecommerce: variantId
-            }
-        });
-
-        window.location = '/account'
-    }
-
-    async renderOneTimeProduct(sub) {
-        const nextShipmentEl = document.createElement('div');
-        const nextDate = window.moment(sub.next_charge_scheduled_at).format('MMMM Do, YYYY');
-        nextShipmentEl.classList.add('next-shipment');
-        nextShipmentEl.innerHTML += `
-            <button class="next-shipment__add button button--primary" data-subscription-id="${sub.id}">Add to next shipment</button>
-            <span class="next-shipment__title">Your next shipment is scheduled for ${nextDate}.</span>
-        `;
-
-        document.querySelector('.product-form').appendChild(nextShipmentEl);
-        document.querySelector('.next-shipment__add').addEventListener('click', this.addToNextShipment.bind(this, sub));
-
-        const nextShipmentObj = await recharge.subscription
-    }
-
-    async addOneTimeProduct(sub) {
+    async addToNextShipment(sub) {
         const variantId = document.querySelector('.product__info-container').getAttribute('data-product-variant'),
             productId = document.querySelector('.product__info-container').getAttribute('data-product-id'),
             quantity = sub.quantity + 1;
@@ -171,6 +136,39 @@ class RechargeWidget extends HTMLElement {
                 }
             });
         }
+
+        window.location = '/account'
+    }
+
+    async renderOneTimeProduct(address) {
+        const nextShipmentEl = document.createElement('div');
+        nextShipmentEl.classList.add('add-otp');
+        nextShipmentEl.innerHTML += `
+            <button class="add-otp__add button button--primary" data-subscription-id="${address.address_id}">Add to next shipment</button>
+        `;
+
+        document.querySelector('.product-form').appendChild(nextShipmentEl);
+        document.querySelector('.add-otp__add').addEventListener('click', this.addOneTimeProduct.bind(this, sub));
+
+        const nextShipmentObj = await recharge.subscription
+    }
+
+    async addOneTimeProduct(sub) {
+        const variantId = document.querySelector('.product__info-container').getAttribute('data-product-variant');
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+
+        const date = `${year}-${month}-${day}`;
+        await recharge.onetime.createOnetime(this.session, {
+            address_id: address.address_id,
+            next_charge_scheduled_at: date,
+            quantity: 1,
+            external_variant_id: {
+                ecommerce: variantId
+            }
+        });
 
         window.location = '/account'
     }
