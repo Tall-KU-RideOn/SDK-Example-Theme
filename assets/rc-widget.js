@@ -72,7 +72,7 @@ class RechargeWidget extends HTMLElement {
     }
 
     async oneTimeButton() {
-        const addressObj = await recharge.address.listAddresses(session, {
+        const addressObj = await recharge.address.listAddresses(this.session, {
             limit: 25,
             sort_by: 'id-asc',
         });
