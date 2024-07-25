@@ -154,7 +154,6 @@ class RechargeWidget extends HTMLElement {
     }
 
     async addOneTimeProduct(address) {
-        console.log("Address: ", address)
         const variantId = document.querySelector('.product__info-container').getAttribute('data-product-variant');
         const today = new Date();
         const year = today.getFullYear();
@@ -162,6 +161,9 @@ class RechargeWidget extends HTMLElement {
         const day = String(today.getDate()).padStart(2, '0');
 
         const date = `${year}-${month}-${day}`;
+        console.log("Address ID: ", address.id)
+        console.log("Date: ", date)
+        console.log("Variant ID: ", variantId)
         await recharge.onetime.createOnetime(this.session, {
             address_id: address.id,
             next_charge_scheduled_at: date,
