@@ -90,8 +90,10 @@ class RechargeWidget extends HTMLElement {
             console.log(`Country: ${address.country}`);
             console.log(`ZIP: ${address.zip}`);
             console.log(`Phone: ${address.phone}`);
-            this.append(this.createCard(address));
-      });
+        });
+        if(addresses != null) {
+            this.renderOneTimeProduct(addresses[0])
+        }
         // const subscriptions = subscriptionsObj.subscriptions;
         // this.renderOneTimeProduct(sub)
     }
@@ -111,29 +113,22 @@ class RechargeWidget extends HTMLElement {
         const nextShipmentObj = await recharge.subscription
     }
 
-    async addToNextShipment(sub) {
-        const variantId = document.querySelector('.product__info-container').getAttribute('data-product-variant'),
-            productId = document.querySelector('.product__info-container').getAttribute('data-product-id'),
-            quantity = sub.quantity + 1;
+    async addToNextShipment(address) {
+        const variantId = document.querySelector('.product__info-container').getAttribute('data-product-variant');
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
 
-        if (variantId === sub.external_variant_id.ecommerce && productId === sub.external_product_id.ecommerce) {
-            await recharge.subscription.updateSubscription(this.session, sub.id, { quantity: quantity });
-        } else {
-            await recharge.subscription.createSubscription(this.session, {
-                address_id: sub.address_id,
-                charge_interval_frequency: sub.charge_interval_frequency,
-                next_charge_scheduled_at: sub.next_charge_scheduled_at,
-                order_interval_frequency: sub.order_interval_frequency,
-                order_interval_unit: sub.order_interval_unit,
-                quantity: 1,
-                external_variant_id: {
-                    ecommerce: variantId
-                },
-                external_product_id: {
-                    ecommerce: productId
-                }
-            });
-        }
+        const date = `${year}-${month}-${day}`;
+        await recharge.onetime.createOnetime(this.session, {
+            address_id: address.address_id,
+            next_charge_scheduled_at: date,
+            quantity: 1,
+            external_variant_id: {
+                ecommerce: variantId
+            }
+        });
 
         window.location = '/account'
     }
