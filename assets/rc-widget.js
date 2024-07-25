@@ -40,6 +40,7 @@ class RechargeWidget extends HTMLElement {
 
             if (this.session) {
                 // this.getNextShipment()
+                console.log("Im here")
                 this.oneTimeButton()
             }
         // }
