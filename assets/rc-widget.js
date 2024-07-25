@@ -77,7 +77,7 @@ class RechargeWidget extends HTMLElement {
             sort_by: 'id-asc',
         });
         console.log("Addresses:", addressObj)
-        const addresses = response.addresses || response
+        const addresses = addressObj.addresses || addressObj
 
         addresses.forEach(address => {
             console.log(`Address ID: ${address.id}`);
