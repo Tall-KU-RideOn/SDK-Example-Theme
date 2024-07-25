@@ -39,7 +39,7 @@ class RechargeWidget extends HTMLElement {
             this.renderWidget()
 
             if (this.session) {
-                this.getNextShipment()
+                // this.getNextShipment()
                 this.oneTimeButton()
             }
         // }
@@ -148,7 +148,7 @@ class RechargeWidget extends HTMLElement {
         `;
 
         document.querySelector('.product-form').appendChild(nextShipmentEl);
-        document.querySelector('.add-otp__add').addEventListener('click', this.addOneTimeProduct.bind(this, sub));
+        document.querySelector('.add-otp__add').addEventListener('click', this.addOneTimeProduct.bind(this, address));
 
         const nextShipmentObj = await recharge.subscription
     }
