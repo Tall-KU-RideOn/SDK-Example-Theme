@@ -144,7 +144,7 @@ class RechargeWidget extends HTMLElement {
         const nextShipmentEl = document.createElement('div');
         nextShipmentEl.classList.add('add-otp');
         nextShipmentEl.innerHTML += `
-            <button class="add-otp__add button button--primary" data-subscription-id="${address.address_id}">Add to next shipment</button>
+            <button class="add-otp__add button button--primary" data-subscription-id="${address.address_id}">Add OTP Product</button>
         `;
 
         document.querySelector('.product-form').appendChild(nextShipmentEl);
