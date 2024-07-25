@@ -163,7 +163,7 @@ class RechargeWidget extends HTMLElement {
 
         const date = `${year}-${month}-${day}`;
         await recharge.onetime.createOnetime(this.session, {
-            address_id: address.address_id,
+            address_id: address.id,
             next_charge_scheduled_at: date,
             quantity: 1,
             external_variant_id: {
