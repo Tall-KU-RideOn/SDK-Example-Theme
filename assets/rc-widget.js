@@ -76,7 +76,22 @@ class RechargeWidget extends HTMLElement {
             limit: 25,
             sort_by: 'id-asc',
         });
-        console.log("Addresses: " + addressObj.addresses)
+        console.log("Addresses:", addressObj)
+        const addresses = response.addresses || response
+
+        addresses.forEach(address => {
+            console.log(`Address ID: ${address.id}`);
+            console.log(`First Name: ${address.first_name}`);
+            console.log(`Last Name: ${address.last_name}`);
+            console.log(`Address 1: ${address.address1}`);
+            console.log(`Address 2: ${address.address2}`);
+            console.log(`City: ${address.city}`);
+            console.log(`Province: ${address.province}`);
+            console.log(`Country: ${address.country}`);
+            console.log(`ZIP: ${address.zip}`);
+            console.log(`Phone: ${address.phone}`);
+            this.append(this.createCard(address));
+      });
         // const subscriptions = subscriptionsObj.subscriptions;
         // this.renderOneTimeProduct(sub)
     }
