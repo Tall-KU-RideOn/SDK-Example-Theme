@@ -153,7 +153,7 @@ class RechargeWidget extends HTMLElement {
         const nextShipmentObj = await recharge.subscription
     }
 
-    async addOneTimeProduct(sub) {
+    async addOneTimeProduct(address) {
         const variantId = document.querySelector('.product__info-container').getAttribute('data-product-variant');
         const today = new Date();
         const year = today.getFullYear();
