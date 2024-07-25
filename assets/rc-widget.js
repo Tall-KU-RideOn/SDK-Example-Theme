@@ -40,6 +40,7 @@ class RechargeWidget extends HTMLElement {
 
             if (this.session) {
                 this.getNextShipment()
+                this.oneTimeButton()
             }
         // }
     }
@@ -70,6 +71,16 @@ class RechargeWidget extends HTMLElement {
         }
     }
 
+    async oneTimeButton() {
+        const addressObj = await recharge.address.listAddresses(session, {
+            limit: 25,
+            sort_by: 'id-asc',
+        });
+        console.log("Addresses: " + addressObj)
+        // const subscriptions = subscriptionsObj.subscriptions;
+        // this.renderOneTimeProduct(sub)
+    }
+
     async renderNextShipment(sub) {
         const nextShipmentEl = document.createElement('div');
         const nextDate = window.moment(sub.next_charge_scheduled_at).format('MMMM Do, YYYY');
@@ -86,6 +97,48 @@ class RechargeWidget extends HTMLElement {
     }
 
     async addToNextShipment(sub) {
+        const variantId = document.querySelector('.product__info-container').getAttribute('data-product-variant'),
+            productId = document.querySelector('.product__info-container').getAttribute('data-product-id'),
+            quantity = sub.quantity + 1;
+
+        if (variantId === sub.external_variant_id.ecommerce && productId === sub.external_product_id.ecommerce) {
+            await recharge.subscription.updateSubscription(this.session, sub.id, { quantity: quantity });
+        } else {
+            await recharge.subscription.createSubscription(this.session, {
+                address_id: sub.address_id,
+                charge_interval_frequency: sub.charge_interval_frequency,
+                next_charge_scheduled_at: sub.next_charge_scheduled_at,
+                order_interval_frequency: sub.order_interval_frequency,
+                order_interval_unit: sub.order_interval_unit,
+                quantity: 1,
+                external_variant_id: {
+                    ecommerce: variantId
+                },
+                external_product_id: {
+                    ecommerce: productId
+                }
+            });
+        }
+
+        window.location = '/account'
+    }
+
+    async renderOneTimeProduct(sub) {
+        const nextShipmentEl = document.createElement('div');
+        const nextDate = window.moment(sub.next_charge_scheduled_at).format('MMMM Do, YYYY');
+        nextShipmentEl.classList.add('next-shipment');
+        nextShipmentEl.innerHTML += `
+            <button class="next-shipment__add button button--primary" data-subscription-id="${sub.id}">Add to next shipment</button>
+            <span class="next-shipment__title">Your next shipment is scheduled for ${nextDate}.</span>
+        `;
+
+        document.querySelector('.product-form').appendChild(nextShipmentEl);
+        document.querySelector('.next-shipment__add').addEventListener('click', this.addToNextShipment.bind(this, sub));
+
+        const nextShipmentObj = await recharge.subscription
+    }
+
+    async addOneTimeProduct(sub) {
         const variantId = document.querySelector('.product__info-container').getAttribute('data-product-variant'),
             productId = document.querySelector('.product__info-container').getAttribute('data-product-id'),
             quantity = sub.quantity + 1;
