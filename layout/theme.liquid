@@ -41,7 +41,7 @@
     <script>
       recharge.init({
         storeIdentifier: '{{shop.permanent_domain}}', // optional when in a shopify environment
-        storefrontAccessToken: 'strfnt_5e89d81c1aa25a0272dd750164994355acfcdc88df2c1597bf2946c33e3c7a66',
+        storefrontAccessToken: '{{storefrontAccessToken}}',
         // retry middleware function if/when Recharge session expires
         loginRetryFn: () => {
           const session = recharge.auth.loginShopifyAppProxy();
