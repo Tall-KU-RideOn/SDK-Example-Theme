@@ -38,6 +38,7 @@ class RechargeWidget extends HTMLElement {
             }
             this.renderWidget()
 
+            console.log("Im here lolz")
             if (this.session) {
                 // this.getNextShipment()
                 console.log("Im here")
@@ -48,6 +49,7 @@ class RechargeWidget extends HTMLElement {
 
     async login() {
         this.session = await recharge.auth.loginShopifyAppProxy();
+        console.log("Session: ", this.session)
     }
 
     async getNextShipment() {
