@@ -76,7 +76,7 @@ class RechargeWidget extends HTMLElement {
             limit: 25,
             sort_by: 'id-asc',
         });
-        console.log("Addresses: " + addressObj)
+        console.log("Addresses: " + addressObj.address)
         // const subscriptions = subscriptionsObj.subscriptions;
         // this.renderOneTimeProduct(sub)
     }
