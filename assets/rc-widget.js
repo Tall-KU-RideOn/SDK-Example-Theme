@@ -154,6 +154,7 @@ class RechargeWidget extends HTMLElement {
     }
 
     async addOneTimeProduct(address) {
+        console.log("Address: ", address)
         const variantId = document.querySelector('.product__info-container').getAttribute('data-product-variant');
         const today = new Date();
         const year = today.getFullYear();
