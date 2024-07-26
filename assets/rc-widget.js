@@ -40,7 +40,7 @@ class RechargeWidget extends HTMLElement {
 
             if (this.session.customerId) {
                 this.getNextShipment()
-                this.oneTimeButton()
+                // this.oneTimeButton()
             }
         // }
     }
