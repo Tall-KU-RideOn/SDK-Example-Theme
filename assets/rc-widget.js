@@ -73,14 +73,14 @@ class RechargeWidget extends HTMLElement {
 
     async oneTimeButton() {
         const addressObj = await recharge.address.listAddresses(this.session, {
-          limit: 25,
-          sort_by: 'id-asc',
+            limit: 25,
+            sort_by: 'id-asc',
         });
-        const addresses = addressObj.addresses || addressObj;
-        if (addresses != null) {
-          this.renderOneTimeProduct(addresses);
+        const addresses = addressObj.addresses || addressObj
+        if(addresses != null) {
+            this.renderOneTimeProduct(addresses[0])
         }
-  }
+    }
 
     async renderNextShipment(sub) {
         const nextShipmentEl = document.createElement('div');
@@ -122,59 +122,16 @@ class RechargeWidget extends HTMLElement {
         window.location = '/account'
     }
 
-    async renderOneTimeProduct(addresses) {
+    async renderOneTimeProduct(address) {
         const nextShipmentEl = document.createElement('div');
         nextShipmentEl.classList.add('add-otp');
         nextShipmentEl.innerHTML += `
-            <button class="add-otp__add button button--primary">Add OTP Product</button>
+            <button class="add-otp__add button button--primary" data-subscription-id="${address.address_id}">Add OTP Product</button>
         `;
 
         document.querySelector('.product-form').appendChild(nextShipmentEl);
-        document.querySelector('.add-otp__add').addEventListener('click', this.openAddressModal(this, addresses));
+        document.querySelector('.add-otp__add').addEventListener('click', this.addOneTimeProduct.bind(this, address));
     }
-
-    openAddressModal(addresses) {
-        const modal = document.getElementById('customModal');
-        const addressList = document.getElementById('addressList');
-        addressList.innerHTML = '';
-
-        addresses.forEach((address, index) => {
-          addressList.innerHTML += `
-            <div>
-              <input type="radio" name="address" id="address-${index}" value="${address.id}">
-              <label for="address-${index}">
-                ${address.address1}, ${address.city}, ${address.province}, ${address.zip}, ${address.country}
-              </label>
-            </div>
-          `;
-        });
-
-        modal.style.display = 'block';
-        this.showStage('address');
-
-        // Event listeners for modal buttons
-        document.getElementById('modalCancel').addEventListener('click', () => this.closeModal());
-        document.getElementById('modalNext').addEventListener('click', () => this.showStage('date'));
-        document.getElementById('modalBack').addEventListener('click', () => this.showStage('address'));
-        document.getElementById('modalAddProduct').addEventListener('click', () => this.addOneTimeProduct());
-    }
-
-  showStage(stage) {
-    const addressStage = document.querySelector('.modal-stage-address');
-    const dateStage = document.querySelector('.modal-stage-date');
-
-    if (stage === 'address') {
-      addressStage.classList.add('modal-stage-active');
-      dateStage.classList.remove('modal-stage-active');
-    } else if (stage === 'date') {
-      addressStage.classList.remove('modal-stage-active');
-      dateStage.classList.add('modal-stage-active');
-    }
-  }
-
-  closeModal() {
-    document.getElementById('customModal').style.display = 'none';
-  }
 
     async addOneTimeProduct(address) {
         const variantId = document.querySelector('.product__info-container').getAttribute('data-product-variant');
