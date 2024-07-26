@@ -451,27 +451,7 @@
         {% render 'product-media-gallery', variant_images: variant_images, is_duplicate: true %}
       </div>
     {%- endif -%}
-    <div id="customModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <div class="modal-stage modal-stage-address">
-      <h2>Select an Address</h2>
-      <div id="addressList"></div>
-      <div class="modal-actions">
-        <button id="modalCancel">Cancel</button>
-        <button id="modalNext">Next</button>
-      </div>
-    </div>
-    <div class="modal-stage modal-stage-date">
-      <h2>Select a Date</h2>
-      <input type="date" id="nextChargeDate">
-      <div class="modal-actions">
-        <button id="modalBack">Back</button>
-        <button id="modalAddProduct">Add Product</button>
-      </div>
-    </div>
-  </div>
-</div>
+
   </div>
 
   {% render 'product-media-modal' variant_images: variant_images %}
