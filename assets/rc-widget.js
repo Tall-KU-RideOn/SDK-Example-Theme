@@ -39,8 +39,7 @@ class RechargeWidget extends HTMLElement {
             this.renderWidget()
 
             if (this.session.customerId) {
-                // this.getNextShipment()
-                console.log("Im here")
+                this.getNextShipment()
                 this.oneTimeButton()
             }
         // }
@@ -77,26 +76,10 @@ class RechargeWidget extends HTMLElement {
             limit: 25,
             sort_by: 'id-asc',
         });
-        console.log("Addresses:", addressObj)
         const addresses = addressObj.addresses || addressObj
-
-        addresses.forEach(address => {
-            console.log(`Address ID: ${address.id}`);
-            console.log(`First Name: ${address.first_name}`);
-            console.log(`Last Name: ${address.last_name}`);
-            console.log(`Address 1: ${address.address1}`);
-            console.log(`Address 2: ${address.address2}`);
-            console.log(`City: ${address.city}`);
-            console.log(`Province: ${address.province}`);
-            console.log(`Country: ${address.country}`);
-            console.log(`ZIP: ${address.zip}`);
-            console.log(`Phone: ${address.phone}`);
-        });
         if(addresses != null) {
             this.renderOneTimeProduct(addresses[0])
         }
-        // const subscriptions = subscriptionsObj.subscriptions;
-        // this.renderOneTimeProduct(sub)
     }
 
     async renderNextShipment(sub) {
@@ -110,8 +93,6 @@ class RechargeWidget extends HTMLElement {
 
         document.querySelector('.product-form').appendChild(nextShipmentEl);
         document.querySelector('.next-shipment__add').addEventListener('click', this.addToNextShipment.bind(this, sub));
-
-        const nextShipmentObj = await recharge.subscription
     }
 
     async addToNextShipment(sub) {
@@ -150,8 +131,6 @@ class RechargeWidget extends HTMLElement {
 
         document.querySelector('.product-form').appendChild(nextShipmentEl);
         document.querySelector('.add-otp__add').addEventListener('click', this.addOneTimeProduct.bind(this, address));
-
-        const nextShipmentObj = await recharge.subscription
     }
 
     async addOneTimeProduct(address) {
@@ -162,9 +141,6 @@ class RechargeWidget extends HTMLElement {
         const day = String(today.getDate()).padStart(2, '0');
 
         const date = `${year}-${month}-${day}`;
-        console.log("Address ID: ", address.id)
-        console.log("Date: ", date)
-        console.log("Variant ID: ", variantId)
         await recharge.onetime.createOnetime(this.session, {
             address_id: address.id,
             next_charge_scheduled_at: date,
