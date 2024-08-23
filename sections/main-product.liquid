@@ -618,11 +618,15 @@
       ]
     }
   </script>
-  <form id="add-to-cart-form" action="/cart/add.js" method="post">
+<form id="add-to-cart-form" action="/cart/add.js" method="post">
+    <!-- Product variant ID -->
     <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
 
-    <!-- Add custom properties here -->
+    <!-- Custom line item property -->
     <input type="text" name="properties[Custom Property]" value="Custom Value">
+
+    <!-- Hidden field for the selling plan ID (for subscriptions) -->
+    <input type="hidden" name="selling_plan" value="1784250544">
 
     <button type="submit">Add to cart</button>
 </form>
