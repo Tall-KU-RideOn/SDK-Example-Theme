@@ -625,8 +625,12 @@
     <!-- Custom line item property -->
     <input type="text" name="properties[Custom Property]" value="Custom Value">
 
-    <!-- Hidden field for the selling plan ID (for subscriptions) -->
-    <input type="hidden" name="selling_plan" value="1784250544">
+    <!-- Conditionally render the selling_plan input if the product has a selling plan -->
+    {% if product.selling_plan_groups.size > 0 %}
+        {% assign first_selling_plan_group = product.selling_plan_groups.first %}
+        {% assign first_selling_plan = first_selling_plan_group.selling_plans.first %}
+        <input type="hidden" name="selling_plan" value="{{ first_selling_plan.id }}">
+    {% endif %}
 
     <button type="submit">Add to cart</button>
 </form>
