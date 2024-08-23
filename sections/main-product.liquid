@@ -618,6 +618,38 @@
       ]
     }
   </script>
+  <form id="add-to-cart-form" action="/cart/add.js" method="post">
+    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+    <!-- Add custom properties here -->
+    <input type="text" name="properties[Custom Property]" value="Custom Value">
+
+    <button type="submit">Add to cart</button>
+</form>
+
+<script>
+document.getElementById('add-to-cart-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    var formData = new FormData(this);
+
+    fetch('/cart/add.js', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Item added to cart:', data);
+        // Add custom handling logic here, such as redirecting to cart or showing a confirmation
+    })
+    .catch(error => {
+        console.error('Error adding to cart:', error);
+    });
+});
+</script>
 </section>
 
 {% schema %}
