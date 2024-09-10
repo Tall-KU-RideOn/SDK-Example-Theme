@@ -546,14 +546,15 @@
           },
         });
 
-        // Handle success
-        if (response.success) {
-          console.log('Subscription created successfully:', response);
-          // Optional redirect to account or confirmation page
-          window.location = '/account';
-        } else {
-          console.error('Failed to create subscription:', response.error);
-        }
+      console.log('Full response from createSubscription:', response);
+
+      // Check the structure of the response
+      if (response && response.subscription) {
+        console.log('Subscription created successfully:', response);
+        window.location = '/account'; // Optional redirect to the account page
+      } else {
+        console.error('Failed to create subscription:', response.error || 'Unknown error');
+      }
       } catch (error) {
         console.error('Error creating subscription:', error);
       }
