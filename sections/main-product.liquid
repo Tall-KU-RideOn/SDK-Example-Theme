@@ -454,6 +454,8 @@
 <button id="subscribe-button" class="btn">Subscribe Now</button>
   </div>
   <script>
+        (async function() {
+    const session = await recharge.auth.loginShopifyAppProxy();
   document.addEventListener("DOMContentLoaded", function() {
     // Add event listener for subscription creation
     const subscribeButton = document.querySelector('#subscribe-button');
