@@ -532,7 +532,7 @@
 
       try {
         // Call Recharge SDK to create a new subscription
-        const response = await recharge.subscription.updateSubscription(session,531317210,{plan_id:17026762});
+        const response = await recharge.subscription.updateSubscription(session,531317210,{plan_id:17026762, price:24});
 
       // Check the structure of the response
       if (response.id) {
