@@ -462,8 +462,8 @@
         event.preventDefault();
 
         // Collect necessary subscription data (e.g., product ID, variant, etc.)
-        const productId = {{ product.id }};
-        const variantId = document.querySelector('input[name="id"]:checked').value;
+        const productId = "7710386127024";
+        const variantId = "43874947432624";
 
         // You might need to collect customer data like email, address, etc.
         const customerData = {
@@ -475,11 +475,20 @@
 
         // API call to Recharge SDK to create a new subscription
         try {
-          const response = await recharge.subscription.createSubscription({
-            product_id: productId,
-            variant_id: variantId,
-            // Include any other required subscription data
-          });
+          const response = await recharge.subscription.createSubscription(session, {
+          address_id: 174869047,
+          charge_interval_frequency: 30,
+          next_charge_scheduled_at: '2022-10-18',
+          order_interval_frequency: 1,
+          order_interval_unit: 'day',
+          quantity: 1,
+          external_variant_id: {
+            ecommerce: variantId,
+          },
+          external_product_id: {
+            ecommerce: productId,
+          },
+        })
 
           if (response.success) {
             console.log('Subscription created successfully:', response);
