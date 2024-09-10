@@ -543,14 +543,13 @@
           },
           external_product_id: {
             ecommerce: '7478411755696', // Ensure the correct product ID is injected dynamically from Liquid
-          },
-          commit:true
+          }
         });
 
       console.log('Full response from createSubscription:', response);
 
       // Check the structure of the response
-      if (response && response.subscription) {
+      if (response.id) {
         console.log('Subscription created successfully:', response);
         window.location = '/account'; // Optional redirect to the account page
       } else {
