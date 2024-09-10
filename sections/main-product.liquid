@@ -451,60 +451,7 @@
         {% render 'product-media-gallery', variant_images: variant_images, is_duplicate: true %}
       </div>
     {%- endif -%}
-<button id="subscribe-button" class="btn">Subscribe Now</button>
   </div>
-  <script>
-        (async function() {
-    const session = await recharge.auth.loginShopifyAppProxy();
-  document.addEventListener("DOMContentLoaded", function() {
-    // Add event listener for subscription creation
-    const subscribeButton = document.querySelector('#subscribe-button');
-    if (subscribeButton) {
-      subscribeButton.addEventListener('click', async function(event) {
-        event.preventDefault();
-
-        // Collect necessary subscription data (e.g., product ID, variant, etc.)
-        const productId = "7710386127024";
-        const variantId = "43874947432624";
-
-        // You might need to collect customer data like email, address, etc.
-        const customerData = {
-          email: 'customer@example.com',
-          firstName: 'John',
-          lastName: 'Doe',
-          // More customer data...
-        };
-
-        // API call to Recharge SDK to create a new subscription
-        try {
-          const response = await recharge.subscription.createSubscription(session, {
-          address_id: 174869047,
-          charge_interval_frequency: 30,
-          next_charge_scheduled_at: '2022-10-18',
-          order_interval_frequency: 1,
-          order_interval_unit: 'day',
-          quantity: 1,
-          external_variant_id: {
-            ecommerce: variantId,
-          },
-          external_product_id: {
-            ecommerce: productId,
-          },
-        })
-
-          if (response.success) {
-            console.log('Subscription created successfully:', response);
-            // Redirect or show confirmation to the user
-          } else {
-            console.error('Error creating subscription:', response.error);
-          }
-        } catch (error) {
-          console.error('API call failed:', error);
-        }
-      });
-    }
-  });
-</script>
 
   <script>
     (async function() {
@@ -551,6 +498,74 @@
 
 })();
   </script>
+
+  <script>
+  (async function() {
+    const session = await recharge.auth.loginShopifyAppProxy();
+
+    async function addSubscriptionButton() {
+      const productFormEl = document.querySelector('.product-form');
+      if (!productFormEl) {
+        return;
+      }
+
+      // Fetch customer addresses
+      const addressObj = await recharge.address.listAddresses(session, {
+        limit: 1,
+      });
+
+      // Get the first address, assuming it exists
+      const firstAddress = addressObj?.addresses?.[0];
+      if (firstAddress) {
+        // Create the subscription button and append it to the product form
+        const subscriptionButtonEl = document.createElement('div');
+        subscriptionButtonEl.innerHTML = `<button class="add-subscription add-subscription__add button button--primary" data-subscription-id="${firstAddress.address_id}">Subscribe to Product</button>`;
+        subscriptionButtonEl.onclick = () => addSubscriptionProduct(firstAddress);
+        productFormEl.appendChild(subscriptionButtonEl);
+      }
+    }
+
+    // Function to create a new subscription using Recharge SDK
+    async function addSubscriptionProduct(address) {
+      const variantId = document.querySelector('.product__info-container').getAttribute('data-product-variant');
+      const today = new Date();
+
+      try {
+        // Call Recharge SDK to create a new subscription
+        const response = await recharge.subscription.createSubscription(session, {
+          address_id: address.id,
+          charge_interval_frequency: 30, // Every 30 days (for monthly subscriptions)
+          next_charge_scheduled_at: today.toISOString().split('T')[0], // Next charge date (today's date)
+          order_interval_frequency: 1, // Order frequency
+          order_interval_unit: 'month', // Frequency unit (e.g., 'month', 'day')
+          quantity: 1, // Quantity of product
+          external_variant_id: {
+            ecommerce: variantId,
+          },
+          external_product_id: {
+            ecommerce: '{{ product.id }}', // Ensure the correct product ID is injected dynamically from Liquid
+          },
+        });
+
+        // Handle success
+        if (response.success) {
+          console.log('Subscription created successfully:', response);
+          // Optional redirect to account or confirmation page
+          window.location = '/account';
+        } else {
+          console.error('Failed to create subscription:', response.error);
+        }
+      } catch (error) {
+        console.error('Error creating subscription:', error);
+      }
+    }
+
+    // Start the process by adding the subscription button
+    await addSubscriptionButton();
+
+  })();
+</script>
+
 
   {% render 'product-media-modal' variant_images: variant_images %}
 
