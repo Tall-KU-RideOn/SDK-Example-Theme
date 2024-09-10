@@ -534,18 +534,10 @@
         // Call Recharge SDK to create a new subscription
         const response = await recharge.subscription.createSubscription(session, {
           address_id: address.id,
-          charge_interval_frequency: 1, // Every 30 days (for monthly subscriptions)
           next_charge_scheduled_at: today.toISOString().split('T')[0], // Next charge date (today's date)
-          order_interval_frequency: 1, // Order frequency
-          order_interval_unit: 'month', // Frequency unit (e.g., 'month', 'day')
           quantity: 1, // Quantity of product
           price: 100,
-          external_variant_id: {
-            ecommerce: "43207475626160",
-          },
-          external_product_id: {
-            ecommerce: '7478411755696', // Ensure the correct product ID is injected dynamically from Liquid
-          },
+          selling_plan_id: 15661028
         });
 
         // Handle success
