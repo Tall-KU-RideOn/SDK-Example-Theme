@@ -252,7 +252,7 @@
                     step="{{ product.selected_or_first_available_variant.quantity_rule.increment }}"
                     value="{{ product.selected_or_first_available_variant.quantity_rule.min }}"
                     form="{{ product_form_id }}"
-                  />
+                  />https://gitlab.rechargeapps.net/engineering/customcheckout/-/jobs/11769977
                   <button class="quantity__button no-js-hidden" name="plus" type="button">
                     <span class="visually-hidden">
                       {{- 'products.product.quantity.increase' | t: product: product.title | escape -}}
@@ -451,8 +451,50 @@
         {% render 'product-media-gallery', variant_images: variant_images, is_duplicate: true %}
       </div>
     {%- endif -%}
-
+<button id="subscribe-button" class="btn">Subscribe Now</button>
   </div>
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Add event listener for subscription creation
+    const subscribeButton = document.querySelector('#subscribe-button');
+    if (subscribeButton) {
+      subscribeButton.addEventListener('click', async function(event) {
+        event.preventDefault();
+
+        // Collect necessary subscription data (e.g., product ID, variant, etc.)
+        const productId = {{ product.id }};
+        const variantId = document.querySelector('input[name="id"]:checked').value;
+
+        // You might need to collect customer data like email, address, etc.
+        const customerData = {
+          email: 'customer@example.com',
+          firstName: 'John',
+          lastName: 'Doe',
+          // More customer data...
+        };
+
+        // API call to Recharge SDK to create a new subscription
+        try {
+          const response = await recharge.subscription.createSubscription({
+            product_id: productId,
+            variant_id: variantId,
+            // Include any other required subscription data
+          });
+
+          if (response.success) {
+            console.log('Subscription created successfully:', response);
+            // Redirect or show confirmation to the user
+          } else {
+            console.error('Error creating subscription:', response.error);
+          }
+        } catch (error) {
+          console.error('API call failed:', error);
+        }
+      });
+    }
+  });
+</script>
+
   <script>
     (async function() {
     const session = await recharge.auth.loginShopifyAppProxy();
@@ -618,47 +660,6 @@
       ]
     }
   </script>
-<form id="add-to-cart-form" action="/cart/add.js" method="post">
-    <!-- Product variant ID -->
-    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-
-    <!-- Custom line item property -->
-    <input type="text" name="properties[Custom Property]" value="Custom Value">
-
-    <!-- Conditionally render the selling_plan input if the product has a selling plan -->
-    {% if product.selling_plan_groups.size > 0 %}
-        {% assign first_selling_plan_group = product.selling_plan_groups.first %}
-        {% assign first_selling_plan = first_selling_plan_group.selling_plans.first %}
-        <input type="hidden" name="selling_plan" value="{{ first_selling_plan.id }}">
-    {% endif %}
-
-    <button type="submit">Add to cart</button>
-</form>
-
-<script>
-document.getElementById('add-to-cart-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    var formData = new FormData(this);
-
-    fetch('/cart/add.js', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'Accept': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Item added to cart:', data);
-        // Add custom handling logic here, such as redirecting to cart or showing a confirmation
-    })
-    .catch(error => {
-        console.error('Error adding to cart:', error);
-    });
-});
-</script>
-</section>
 
 {% schema %}
 {
