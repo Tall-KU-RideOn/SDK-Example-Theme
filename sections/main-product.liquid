@@ -537,17 +537,8 @@
           next_charge_scheduled_at: today.toISOString().split('T')[0], // Next charge date (today's date)
           quantity: 1, // Quantity of product
           price: 50,
-          plan_id: 15494745,
-          external_variant_id: {
-            ecommerce: "43207475626160",
-          },
-          external_product_id: {
-            ecommerce: '7478411755696', // Ensure the correct product ID is injected dynamically from Liquid
-          }
+          plan_id: 15494745
         });
-
-      console.log('Full response from createSubscription:', response);
-
       // Check the structure of the response
       if (response.id) {
         console.log('Subscription created successfully:', response);
