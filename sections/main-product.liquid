@@ -141,7 +141,9 @@
                     <!-- Default hidden properties -->
                     <input type="hidden" name="properties[trial_kit_swap_flow]" value="true">
                     <input type="hidden" name="properties[swap_plan_id]" value="3917294">
+                    <!-- Hidden input field for swap_next_charge_date -->
                     <input type="hidden" name="properties[swap_next_charge_date]" value="">
+
                     <!-- Hidden input field for swap_variant_id -->
                     <input type="hidden" id="swap_variant_id" name="properties[swap_variant_id]" value="41939518193799">
 
@@ -739,21 +741,22 @@
       {{ product | structured_data }}
     </script>
     <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const variantInput = document.querySelector('#swap_next_charge_date');
+      document.addEventListener('DOMContentLoaded', function() {
+  const chargeDateInput = document.querySelector('input[name="properties[swap_next_charge_date]"]');
 
-    // Get today's date
-    const today = new Date();
+  // Get today's date
+  const today = new Date();
 
-    // Add 17 days to the current date
-    today.setDate(today.getDate() + 17);
+  // Add 17 days to the current date
+  today.setDate(today.getDate() + 17);
 
-    // Format the date as YYYY-MM-DD
-    const futureDate = today.toISOString().split('T')[0];
+  // Format the date as MM/DD/YYYY
+  const futureDate = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
 
-    // Set the value of swap_variant_id to 17 days from today
-    variantInput.value = futureDate;
-  });
+  // Set the value of swap_next_charge_date to 17 days from today
+  chargeDateInput.value = futureDate;
+});
+
 </script>
   </div>
 </product-info>
