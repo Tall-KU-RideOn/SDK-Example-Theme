@@ -141,15 +141,16 @@
                     <!-- Default hidden properties -->
                     <input type="hidden" name="properties[trial_kit_swap_flow]" value="true">
                     <input type="hidden" name="properties[swap_plan_id]" value="3917294">
-                    <input type="hidden" name="properties[swap_next_charge_date]" value="2022">
+                    <input type="hidden" name="properties[swap_next_charge_date]" value="">
                     <!-- Hidden input field for swap_variant_id -->
-                    <input type="hidden" id="swap_variant_id" name="properties[swap_variant_id]" value="">
+                    <input type="hidden" id="swap_variant_id" name="properties[swap_variant_id]" value="41939518193799">
 
-                    <!-- Your add to cart button -->
-                    <button type="submit">Add to Cart</button>
                     <!-- Engraving input field (for handle, max 3 characters) -->
                     <label for="engraving">Engraving (max 3 characters):</label>
                     <input type="text" id="engraving" name="properties[f]" maxlength="3" placeholder="ABC">
+
+                    <!-- Your add to cart button -->
+                    <button type="submit">Add to Cart</button>
 
                     {{ form | payment_terms }}
                   {%- endform -%}
@@ -739,7 +740,7 @@
     </script>
     <script>
   document.addEventListener('DOMContentLoaded', function() {
-    const variantInput = document.querySelector('#swap_variant_id');
+    const variantInput = document.querySelector('#swap_next_charge_date');
 
     // Get today's date
     const today = new Date();
