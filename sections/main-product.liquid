@@ -117,9 +117,15 @@
                 {%- form 'product', product, id: product_form_installment_id, class: 'installment caption-large' -%}
 
                   <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                    <!-- Add custom input fields for line item properties -->
-                  <label for="custom-property">Custom Property:</label>
-                  <input type="text" id="custom-property" name="properties[Custom Property]">
+                <!-- Default hidden properties -->
+                <input type="hidden" name="properties[trial_kit_swap_flow]" value="true">
+                <input type="hidden" name="properties[swap_plan_id]" value="1234">
+                <input type="hidden" name="properties[swap_next_charge_date]" value="2/18/2025">
+                <input type="hidden" id="swap_variant_id" name="properties[swap_variant_id]" value="">
+
+                <!-- Engraving input field (for handle, max 3 characters) -->
+                <label for="engraving">Engraving (max 3 characters):</label>
+                <input type="text" id="engraving" name="properties[f]" maxlength="3" placeholder="ABC">
 
                   {{ form | payment_terms }}
                 {%- endform -%}
