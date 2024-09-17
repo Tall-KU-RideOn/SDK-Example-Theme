@@ -751,7 +751,8 @@
   today.setDate(today.getDate() + 17);
 
   // Format the date as MM/DD/YYYY
-  const futureDate = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
+        const futureDate = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+
 
   // Set the value of swap_next_charge_date to 17 days from today
   chargeDateInput.value = futureDate;
