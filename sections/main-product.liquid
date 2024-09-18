@@ -150,12 +150,13 @@
                     <!-- Engraving input field (for handle, max 3 characters) -->
                     <label for="engraving">Engraving (max 3 characters):</label>
                     <input type="text" id="engraving" name="properties[f]" maxlength="3" placeholder="ABC">
+                      <div class="product-form__input">
+                     <label class="form__label" for="property1">
+                      Property 1
+                  </label>
+                   <input type="text" placeholder="property 1" form="{{ product_form_id }}"  id="property1" name="properties[propery 1]" />
 
-                    <!-- Your add to cart button -->
-                    <button type="submit">Add to Cart</button>
-
-                      <!-- Shopify's native Add to Cart button -->
-                    <button type="submit">{{ 'products.product.add_to_cart' | t }}</button>
+                    </div>
 
                     {{ form | payment_terms }}
                   {%- endform -%}
