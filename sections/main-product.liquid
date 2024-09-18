@@ -145,7 +145,7 @@
                     <input type="hidden" name="properties[swap_next_charge_date]" value="">
 
                     <!-- Hidden input field for swap_variant_id -->
-                    <input type="hidden" id="swap_variant_id" name="properties[swap_variant_id]" value="419397547132230">
+                    <input type="hidden" id="swap_variant_id" name="properties[swap_variant_id]" value="41939754713223">
 
                     <!-- Engraving input field (for handle, max 3 characters) -->
                     <label for="engraving">Engraving (max 3 characters):</label>
@@ -153,6 +153,9 @@
 
                     <!-- Your add to cart button -->
                     <button type="submit">Add to Cart</button>
+
+                      <!-- Shopify's native Add to Cart button -->
+                    <button type="submit">{{ 'products.product.add_to_cart' | t }}</button>
 
                     {{ form | payment_terms }}
                   {%- endform -%}
